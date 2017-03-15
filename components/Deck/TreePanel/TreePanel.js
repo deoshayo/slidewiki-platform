@@ -13,8 +13,13 @@ import deleteTreeNodeAndNavigate from '../../../actions/decktree/deleteTreeNodeA
 import addTreeNodeAndNavigate from '../../../actions/decktree/addTreeNodeAndNavigate';
 import forkDeck from '../../../actions/decktree/forkDeck';
 import moveTreeNodeAndNavigate from '../../../actions/decktree/moveTreeNodeAndNavigate';
+import PictureNodeList from './PictureNodeList';
 
 class TreePanel extends React.Component {
+
+    componentDidMount(){
+        $('.menu > .item').tab();
+    }
     handleFocus() {
 
     }
@@ -120,45 +125,51 @@ class TreePanel extends React.Component {
         let rootNodeTitle = <strong> {rootNode.title} </strong>;
         let decktreeError = this.props.DeckTreeStore.error ? this.props.DeckTreeStore.error.msg : 0;
         return (
-            <div className="ui panel sw-tree-panel" ref="treePanel" onFocus={this.handleFocus} onBlur={this.handleBlur}>
-                <div className="ui segments">
-                    {this.props.UserProfileStore.username === '' ? '' :
-                        <div className="3 fluid ui icon large buttons">
-                            <div className="ui basic disabled attached button" aria-label="Theme" data-tooltip="Theme"
-                                 onClick={this.handleTheme.bind(this)}>
-                                <i className="theme black icon"></i>
-                            </div>
-                            <div className="ui basic attached button" aria-label="Fork" data-tooltip="Fork" onClick={this.handleFork.bind(this)}>
-                                <i className="fork black icon"></i>
-                            </div>
-                            <div className="ui basic disabled attached button" aria-label="Translate" data-tooltip="Translate" 
-                                 onClick={this.handleTranslation.bind(this)}>
-                                <i className="translate black icon"></i>
-                            </div>
-                        </div>
-                    }
-                    <div className="ui secondary segment">
-                        <NavLink style={rootNodeStyles} href={'/deck/' + rootNode.id}>{rootNodeTitle}</NavLink>
-                    </div>
-                    <div className="ui segment" style={treeDIVStyles}>
-
-                        {decktreeError ? <div className="ui error message" style={{
-                            'wordBreak': 'break-all',
-                            'wordWrap': 'break-word'
-                        }}> {decktreeError} </div> : ''}
-
-                        <Tree deckTree={deckTree} rootNode={rootNode} selector={selector} nextSelector={nextSelector}
-                              prevSelector={prevSelector} page={this.props.page}
-                              mode={this.props.mode} onToggleNode={this.handleToggleNode.bind(this)}
-                              onSwitchOnAction={this.handleSwitchOnAction.bind(this)}
-                              onRename={this.handleRenameNode.bind(this)}
-                              onUndoRename={this.handleUndoRenameNode.bind(this)}
-                              onSave={this.handleSaveNode.bind(this)}
-                              onAddNode={this.handleAddNode.bind(this)} onDeleteNode={this.handleDeleteNode.bind(this)}
-                              onMoveNode={this.handleMoveNode.bind(this)}
-                              username={this.props.UserProfileStore.username}/>
-                    </div>
+            <div className="ui segments">
+              <div className="ui secondary segment">
+                <div className="ui tabular menu" ref="decktreeTabular">
+                  <a className="item" data-tab="tree">Tree</a>
+                  <a className="item active" data-tab="visual">Visual</a>
                 </div>
+              </div>
+
+            <div className="ui bottom attached tab segment" data-tab="tree">
+              <div className="ui panel sw-tree-panel" ref="treePanel" onFocus={this.handleFocus} onBlur={this.handleBlur}>
+                {this.props.UserProfileStore.username === '' ? '' :
+                    <div className="3 fluid ui icon large buttons">
+                        <div className="ui basic disabled attached button" aria-label="Theme" data-tooltip="Theme"
+                             onClick={this.handleTheme.bind(this)}>
+                            <i className="theme black icon"></i>
+                        </div>
+                        <div className="ui basic attached button" aria-label="Fork" data-tooltip="Fork" onClick={this.handleFork.bind(this)}>
+                            <i className="fork black icon"></i>
+                        </div>
+                        <div className="ui basic disabled attached button" aria-label="Translate" data-tooltip="Translate"
+                             onClick={this.handleTranslation.bind(this)}>
+                            <i className="translate black icon"></i>
+                        </div>
+                    </div>
+                }
+                    {decktreeError ? <div className="ui error message" style={{
+                        'wordBreak': 'break-all',
+                        'wordWrap': 'break-word'
+                    }}> {decktreeError} </div> : ''}
+
+                    <Tree deckTree={deckTree} rootNode={rootNode} selector={selector} nextSelector={nextSelector}
+                          prevSelector={prevSelector} page={this.props.page}
+                          mode={this.props.mode} onToggleNode={this.handleToggleNode.bind(this)}
+                          onSwitchOnAction={this.handleSwitchOnAction.bind(this)}
+                          onRename={this.handleRenameNode.bind(this)}
+                          onUndoRename={this.handleUndoRenameNode.bind(this)}
+                          onSave={this.handleSaveNode.bind(this)}
+                          onAddNode={this.handleAddNode.bind(this)} onDeleteNode={this.handleDeleteNode.bind(this)}
+                          onMoveNode={this.handleMoveNode.bind(this)}
+                          username={this.props.UserProfileStore.username}/>
+                </div>
+              </div>
+              <div className="ui bottom attached tab segment active" data-tab="visual" style={treeDIVStyles}>
+                  <PictureNodeList deckTree={deckTree}/>
+              </div>
             </div>
         );
     }
