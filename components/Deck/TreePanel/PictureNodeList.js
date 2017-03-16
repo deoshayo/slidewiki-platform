@@ -8,7 +8,7 @@ class PictureNodeList extends React.Component {
         const affix= '/deck/' + this.props.deckTree.get('id');
         const nodes = this.props.deckTree.get('children').map((node, index) => {
             return <NavLink key={index} href={affix + '/slide/' + node.get('id')}>
-            <img src={Microservices.file.uri + '/16/thumbnails/' + node.get('id') + '.png'} width='230px' height='160px' style={{'border': '1px solid black', 'border-radius': '10px'}}/>
+            <img src={Microservices.file.uri + '/slideThumbnails/' + node.get('id') + '.jpeg'} width='230px' height='160px' style={{'border': '1px solid black', 'border-radius': '10px'}}/>
               <i>{node.get('title')}</i>
             <div className="ui divider"/>
           </NavLink>;
